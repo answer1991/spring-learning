@@ -2,8 +2,6 @@ package com.answer1991.validation;
 
 import java.util.List;
 
-import javax.validation.Validator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -11,7 +9,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 public class Testor {
 	private AbstractApplicationContext cxt;
@@ -55,6 +52,6 @@ public class Testor {
 		
 		Set<ConstraintViolation<People>> result = myService.getValidator().validate(p);
 		*/
-		Validator validator = this.cxt.getBean("validator", LocalValidatorFactoryBean.class);
+		//Validator validator = this.cxt.getBean("validator", LocalValidatorFactoryBean.class);
 	}
 }
