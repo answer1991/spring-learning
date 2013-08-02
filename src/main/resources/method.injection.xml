@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+	 
+	<bean id="methodInjectedBean" class="com.answer1991.method.injection.MethodInjectedBean" scope="prototype"></bean>
+	
+	<!-- method injection 使用在一个singleton bean每次调用都要使用一个新的prototype的bean的时候 -->
+	<!-- 被注入的方法返回的bean一定要使用prototype的，不然一直都是返回同一个对象 -->
+	<!-- 使用动态代理的方式来处理overwrite这个方法 -->
+	<bean id="abstractMethodInjectionBean" class="com.answer1991.method.injection.AbstractMethodInjectionBean">
+		<lookup-method name="createBean" bean="methodInjectedBean"/>
+	</bean>
+	
+	<bean id="notAbstractMethodInjectionBean" class="com.answer1991.method.injection.NotAbstractMethodInjectionBean">
+		<lookup-method name="createBean" bean="methodInjectedBean"/>
+	</bean>
+	
+</beans>

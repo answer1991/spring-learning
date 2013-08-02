@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<!-- Annotation injection is performed before XML injection -->
+	<!-- 要使用注解，必须加上这个标签 -->
+	<context:annotation-config />
+
+	<!-- 用Ant EL表达式的方式将Bean里面的value替换掉 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>jdbc.properties</value>
+				<value>jdbc2.properties</value>
+				<value>bean.properties</value>
+			</list>
+		</property>
+		<!-- 这里的优先级低于外部的 -->
+		<property name="properties">
+			<value>
+				jdbc.url=mysql:jdbc://127.0.0.1:3306/hello
+				jdbc.username=admin1
+			</value>
+		</property>
+	</bean>
+
+	<!-- register Customer Property Editor -->
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="com.answer1991.property.editor.Foo" value="com.answer1991.property.editor.FooTypeEditor"></entry>
+			</map>
+		</property>
+
+		<property name="propertyEditorRegistrars">
+			<list>
+				<bean
+					class="com.answer1991.property.editor.CustomerPropertyEditorResgistrar">
+					<property name="dateEditor" ref="myDateFormatTypeEditor"></property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- register conversion support -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="example.MyCustomConverter" />
+			</list>
+		</property>
+
+		<!-- register Formatter -->
+		<property name="formatters">
+			<set>
+				<bean class="org.example.MyFormatter" />
+				<bean class="org.example.MyAnnotationFormatterFactory" />
+			</set>
+		</property>
+		
+		<!-- register Formatter Registrars -->
+		<property name="formatterRegistrars">
+			<set>
+				<bean class="org.example.MyFormatterRegistrar" />
+			</set>
+		</property>
+	</bean>
+
+
+	<import resource="factory.xml" />
+	<import resource="hello.xml" />
+	<import resource="dependencies.xml" />
+	<import resource="dependencies.idref.xml" />
+
+	<import resource="merging.xml" />
+	<import resource="method.injection.xml" />
+	<import resource="dependon.xml" />
+	<import resource="lazy.initialized.xml" />
+	<import resource="autowiring.xml" />
+	<import resource="callback.xml" />
+</beans>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 用Ant EL表达式的方式将Bean里面的value替换掉 -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>jdbc.properties</value>
+				<value>jdbc2.properties</value>
+				<value>bean.properties</value>
+			</list>
+		</property>
+		<!-- 这里的优先级低于外部的 -->
+		<property name="properties">
+			<value>
+				jdbc.url=mysql:jdbc://127.0.0.1:3306/hello
+				jdbc.username=admin1
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="dataSource" class="com.answer1991.bean.factory.processor.DataSource">
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	
+	<bean id="property" class="com.answer1991.bean.factory.processor.IProperty" abstract="true"></bean>
+	<bean id="propertyImplement" class="${custom.propertyImplement.class}" />
+	<bean id="testBean" class="com.answer1991.bean.factory.processor.TestBean">
+		<property name="property">
+			<ref bean="propertyImplement" />
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<!-- Annotation injection is performed before XML injection -->
+	<!-- 要使用注解，必须加上这个标签 -->
+	<context:annotation-config />
+
+	<!-- 用Ant EL表达式的方式将Bean里面的value替换掉 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		
+	</bean>
+
+	<!-- register Customer Property Editor -->
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		
+	</bean>
+
+	<!-- register conversion support -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="registerDefaultFormatters" value="false"></property>
+		<property name="converters">
+			<list>
+				<bean class="com.answer1991.converter.BarToFooConverter" />
+			</list>
+		</property>
+
+		<!-- register Formatter -->
+		<property name="formatters">
+			<set>
+				<bean class="com.answer1991.format.MyDateFormatter" />
+			</set>
+		</property>
+		
+		<!-- register Formatter Registrars -->
+		<property name="formatterRegistrars">
+			<set>
+			</set>
+		</property>
+	</bean>
+
+	<!-- formatter 也能起到 TypeEditor的作用 -->
+	<bean id="testBean" class="com.answer1991.format.TestBean">
+		<property name="date" value="1991-3-06"></property>
+	</bean>
+</beans>

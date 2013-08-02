@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="innerListBean" class="com.answer1991.merging.InnerListBean">
+		<property name="list">
+			<list>
+				<value>Joe Chen</value>
+				<ref bean="bar"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- list merge=default 会覆盖掉原先的list -->
+	<bean id="childInnerListBean" parent="innerListBean">
+		<property name="list">
+			<list merge="default">
+				<value>Liu Ying</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- list merge=true 会在原先的基础上增加 -->
+	<bean id="childMergeInnerListBean" parent="innerListBean">
+		<property name="list">
+			<list merge="true">
+				<value>Liu Ying</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- map -->
+	<bean id="innerMapBean" class="com.answer1991.merging.InnerMapBean">
+		<property name="map">
+			<map>
+				<entry key="bar" value-ref="bar" />
+				<entry key="string" value="hello" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- 一定要加上merge=true才会在原先的基础上追加! -->
+	<bean id="childInnerMapBean" parent="innerMapBean">
+		<property name="map">
+			<map merge="true">
+				<entry key="string" value="world" />
+			</map>
+		</property>
+	</bean>
+</beans>

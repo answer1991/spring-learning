@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- 使用AspectJ需要这个标签 -->
+	<aop:aspectj-autoproxy />
+
+	<!-- Annotation injection is performed before XML injection -->
+	<!-- 要使用注解，必须加上这个标签 -->
+	<context:annotation-config />
+	
+
+	<!-- 用Ant EL表达式的方式将Bean里面的value替换掉 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>jdbc.properties</value>
+				<value>jdbc2.properties</value>
+				<value>bean.properties</value>
+			</list>
+		</property>
+		<!-- 这里的优先级低于外部的 -->
+		<property name="properties">
+			<value>
+				jdbc.url=mysql:jdbc://127.0.0.1:3306/hello
+				jdbc.username=admin1
+			</value>
+		</property>
+	</bean>
+
+	<!-- register Customer Property Editor -->
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="com.answer1991.property.editor.Foo" value="com.answer1991.property.editor.FooTypeEditor"></entry>
+			</map>
+		</property>
+
+		<property name="propertyEditorRegistrars">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- register conversion support -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+			</list>
+		</property>
+
+		<!-- register Formatter -->
+		<property name="formatters">
+			<set>
+			</set>
+		</property>
+		
+		<!-- register Formatter Registrars -->
+		<property name="formatterRegistrars">
+			<set>
+			</set>
+		</property>
+	</bean>
+
+
+	<bean id="firstAspect" class="com.answer1991.aspect.NotUsefulAspect"></bean>
+	<bean id="testBean" class="com.answer1991.aspect.BeanWithTransform"></bean>
+</beans>

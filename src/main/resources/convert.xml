@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Annotation injection is performed before XML injection -->
+	<!-- 要使用注解，必须加上这个标签 -->
+	<context:annotation-config />
+
+	<!-- register Convert and Formatter support -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<!-- register Convert Support -->
+		<property name="converters">
+			<list>
+				<bean class="com.answer1991.converter.BarToFooConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="bar" class="com.answer1991.converter.Bar">
+		<property name="name" value="Joe Chen"></property>
+	</bean>
+	
+	<bean id="testBean" class="com.answer1991.converter.TestBean">
+		<property name="foo" ref="bar"></property>
+	</bean>
+</beans>

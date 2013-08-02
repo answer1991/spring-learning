@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Annotation injection is performed before XML injection -->
+	<!-- 要使用注解，必须加上这个标签 -->
+	<context:annotation-config />
+
+	<!-- register Customer Property Editor -->
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="com.answer1991.property.editor.Foo" value="com.answer1991.property.editor.FooTypeEditor"></entry>
+			</map>
+		</property>
+
+		<property name="propertyEditorRegistrars">
+			<list>
+				<bean
+					class="com.answer1991.property.editor.CustomerPropertyEditorResgistrar">
+					<property name="dateEditor" ref="myDateFormatTypeEditor"></property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="bar" class="com.answer1991.property.editor.Bar">
+		<property name="foo" value="I'm Joe Chen"></property>
+	</bean>
+
+	<bean id="builtInPropertyTestBean" class="com.answer1991.property.editor.BuiltInPropertyTestBean">
+		<property name="birth" value="1991-03-06"></property>
+		<property name="log" value="log4j.properties"></property>
+	</bean>
+
+	<bean id="myLocale" class="java.util.Locale" factory-method="createConstant">
+		<constructor-arg value="zh" index="0" />
+		<constructor-arg value="CN" index="1" />
+	</bean>
+	<bean id="myDateFormat" class="java.text.SimpleDateFormat">
+		<constructor-arg value="yyyy-MM-dd" />
+		<constructor-arg ref="myLocale"></constructor-arg>
+	</bean>
+	<bean id="myDateFormatTypeEditor"
+		class="org.springframework.beans.propertyeditors.CustomDateEditor">
+		<constructor-arg ref="myDateFormat" />
+		<constructor-arg value="true" />
+	</bean>
+
+</beans>

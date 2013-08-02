@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+	 
+	<bean id="idRefBar" class="com.answer1991.dependencies.idref.Bar"></bean>
+
+	<!-- 使用idref会在bean初始化之前，也就是Spring Container初始化的时候检测是否有对应的bean存在  -->
+	
+	<bean id="idRefBean" class="com.answer1991.dependencies.idref.IdRefBean" scope="prototype">
+		<property name="bar">
+			<idref bean="bar1"/>
+		</property>
+	</bean>
+	
+	<!-- 如果不是用idref，Spring Container在初始化的时候不会检测property的bean是否存在 -->
+	<!-- 特别是scope为prototype的bean，也许在部署很久之后才发现某个bean因为引用不存在的bean而报错 -->
+	<!-- 
+	<bean id="idRefBean" class="com.answer1991.dependencies.idref.IdRefBean" scope="prototype">
+		<property name="bar">
+			<ref bean="bar1"/>
+		</property>
+	</bean>
+	 -->
+	
+</beans>

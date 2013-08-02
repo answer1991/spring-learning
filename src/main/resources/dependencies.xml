@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="bar" class="com.answer1991.dependencies.BarImpl"></bean>
+	<bean id="baz" class="com.answer1991.dependencies.BazImpl"></bean>
+	
+	<!-- 构造函数生成依赖 -->
+	<bean id="fooConstructorDependency" class="com.answer1991.dependencies.FooConstructorDependency">
+		<constructor-arg ref="bar" />
+		<constructor-arg ref="baz" />
+	</bean>
+	
+	<!-- 构造函数生成依赖，当两个参数类型相同时，可以使用index来指定对应的参数位置 -->
+	<bean id="constructorDependencyWithIndex" class="com.answer1991.dependencies.ConstructorDependencyWithIndex">
+		<constructor-arg index="0">
+			<value>Joe</value>
+		</constructor-arg>
+		<constructor-arg index="1">
+			<value>Chen</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- factory生成依赖也要使用 constructor-arg -->
+	<bean id="staticFactoryDependency" class="com.answer1991.dependencies.StaticFactoryDependency" factory-method="getInstance">
+		<constructor-arg ref="bar" />
+		<constructor-arg ref="baz" />
+	</bean>
+	
+	<!-- 使用setter生成依赖 -->
+	<bean id="setterDependency" class="com.answer1991.dependencies.SetterDependency">
+		<property name="bar" ref="bar"></property>
+		<property name="baz" ref="baz"></property>
+	</bean>
+	
+	<bean id="propertyDependency" class="com.answer1991.dependencies.PropertyDependency">
+		<property name="properties">
+			<value>
+				name=Joe Chen
+				id=055574
+			</value>
+		</property>
+	</bean>
+</beans>

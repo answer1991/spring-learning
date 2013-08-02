@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Annotation injection is performed before XML injection -->
+	<!-- 要使用注解，必须加上这个标签 -->
+	<context:annotation-config />
+
+	<bean id="testBean" class="com.answer1991.autowiring.rule.TestBean"
+		autowire="byName"></bean>
+	<bean id="iProperty" class="com.answer1991.autowiring.rule.IProperty"
+		abstract="true"></bean>
+	<bean id="setPropertyTestBean" class="com.answer1991.autowiring.rule.SetPropertyTestBean"></bean>
+
+	<!-- autowired在有两个候选bean的时候会报错 -->
+	<!-- 一种解决办法是将属性的id用alias关联 -->
+	<!-- 另一种方法是qualifier -->
+	<bean id="propertyOne" class="com.answer1991.autowiring.rule.PropertyOne">
+		<qualifier value="main" />
+	</bean>
+	<bean id="propertyTwo" class="com.answer1991.autowiring.rule.PropertyTwo">
+		<qualifier value="backup" />
+	</bean>
+	<bean id="propertyThree" class="com.answer1991.autowiring.rule.PropertyThree">
+		<qualifier value="backup" />
+	</bean>
+
+	<!-- Autowired也能加在setter方法上面 -->
+	<bean id="methodAutowiredBean" class="com.answer1991.autowiring.rule.MethodAutowiredBean"></bean>
+
+	<!-- Autowired也能加载其他的方法上面，这些方法能完成一系列的依赖关系 -->
+	<bean id="otherMethodAutowiredBean" class="com.answer1991.autowiring.rule.OtherMethodAutowiredBean"></bean>
+
+
+	<!-- 自定义Annotation -->
+	<bean id="selfDefineAnnotationTestBean"
+		class="com.answer1991.autowiring.rule.SelfDefineAnnotationTestBean">
+	</bean>
+	<bean class="com.answer1991.autowiring.rule.PropertyTwo">
+		<qualifier type="SelfDefineAnnotation" value="hello" />
+	</bean>
+	<bean class="com.answer1991.autowiring.rule.PropertyThree">
+		<qualifier type="SelfDefineAnnotation" value="welcome" />
+	</bean>
+	<!-- 
+		<alias name="propertyOne" alias="property"></alias> 
+	-->
+
+	<!-- 没有用Qualifier标记的注解也能通过这个加入到自定义的Qualifier里面 -->
+	<bean id="customAutowireConfigurer"
+		class="org.springframework.beans.factory.annotation.CustomAutowireConfigurer">
+		<property name="customQualifierTypes">
+			<set>
+			</set>
+		</property>
+	</bean>
+</beans>

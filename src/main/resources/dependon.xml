@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 不加depends-on的话， 写在前面的bean先会被初始化 -->
+	<!-- depends-on也会改变bean销毁的顺序 -->
+	<bean id="secondInitBean" class="com.answer1991.dependon.SecondInitBean"
+		depends-on="firstInitBean"></bean>
+
+	<bean id="firstInitBean" class="com.answer1991.dependon.FirstInitBean"></bean>
+</beans>
