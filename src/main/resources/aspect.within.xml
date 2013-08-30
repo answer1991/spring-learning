@@ -16,6 +16,7 @@
 	<!-- 要使用注解，必须加上这个标签 -->
 	<context:annotation-config />
 
-	<bean id="firstAspect" class="com.answer1991.aspect.NotUsefulAspect"></bean>
-	<bean id="testBean" class="com.answer1991.aspect.BeanWithTransform"></bean>
+	<bean class="com.answer1991.aspect.pointcut.within.WithinAspect"></bean>
+	<bean id="logicalBean" class="com.answer1991.aspect.LogicalBean"></bean>
+	<bean id="logicalBean2" class="com.answer1991.aspect.pointcut.within.LogicalBean2"></bean>
 </beans>

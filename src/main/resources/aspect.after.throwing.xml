@@ -16,6 +16,6 @@
 	<!-- 要使用注解，必须加上这个标签 -->
 	<context:annotation-config />
 
-	<bean id="firstAspect" class="com.answer1991.aspect.NotUsefulAspect"></bean>
-	<bean id="testBean" class="com.answer1991.aspect.BeanWithTransform"></bean>
+	<bean class="com.answer1991.aspect.advice.afterthrowing.SomeAspect"></bean>
+	<bean id="testBean" class="com.answer1991.aspect.advice.afterthrowing.TestBean"></bean>
 </beans>
